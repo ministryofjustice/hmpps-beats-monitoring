@@ -1,0 +1,12 @@
+---
+
+- name: Set Facts
+  set_fact:
+    es_version: "{{ es_version|default('6.2.4') }}"
+    artifact_base: "https://artifacts.elastic.co/downloads/beats/"
+
+- name: Install beats components
+  include: install_beats.yml
+  with_items:
+    - filebeat
+    - metricbeat

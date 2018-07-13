@@ -1,0 +1,40 @@
+---
+################### Filebeat Configuration Example #########################
+
+############################# Filebeat ######################################
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /var/log/*.log
+      encoding: utf-8
+      input_type: log
+      multiline:
+        pattern: ^\[
+        negate: false
+        match: after
+        max_lines: 500
+        timeout: 5s
+
+output:
+  elasticsearch:
+    hosts: ["{{ monitoring_host }}"]
+    template:
+      name: "filebeat"
+      path: "/etc/filebeat/filebeat.template.json"
+      overwrite: true
+#========================== General ==================================
+tags: ["{{ lookup('env', 'HMPPS_ROLE')}}", "{{ lookup('env', 'HMPPS_STACK')}}"]
+
+
+############################# Logging #########################################
+
+logging:
+  to_syslog: false
+  to_files: true
+  files:
+    path: /var/log/beats
+    name: filebeat
+    rotateeverybytes: 10485760 # = 10MB
+    keepfiles: 7
+  level: "{{ debug_level|default('info') }}"
