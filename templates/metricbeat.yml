@@ -13,8 +13,8 @@ metricbeat:
       period: 60s
       processes:  [".*"]
       interfaces: [eth0]
-      filters:
-        - drop_event.when.regexp.mount_point: '^/(sys|cgroup|run|proc|dev|etc|host)($|/)'
+#      filters:
+#        - drop_event.when.regexp.mount_point: '^/(sys|cgroup|run|proc|dev|etc|host)($|/)'
 
     #------------------------------- Docker Module -------------------------------
     - module: docker
