@@ -54,3 +54,5 @@ logging:
     rotateeverybytes: 10485760 # = 10MB
     keepfiles: 7
   level: "{{ debug_level|default('info') }}"
+
+setup.dashboards.enabled: true
