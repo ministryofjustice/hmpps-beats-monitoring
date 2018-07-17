@@ -15,7 +15,13 @@ filebeat:
         match: after
         max_lines: 500
         timeout: 5s
-
+{% if ansible_env.HAS_DOCKER|default(False) -%}
+    -
+      paths:
+        - /var/lib/docker/containers/*/*.log
+      encoding: utf-8
+      type: log
+{% endif -%}
 output:
   elasticsearch:
     hosts: ["{{ monitoring_host }}"]
