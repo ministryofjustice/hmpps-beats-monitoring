@@ -15,7 +15,7 @@ filebeat:
         match: after
         max_lines: 500
         timeout: 5s
-{% if ansible_env.HAS_DOCKER|default(False) -%}
+{% if ansible_env.HAS_DOCKER|default(False) %}
     -
       paths:
         - /var/lib/docker/containers/*/*.log
@@ -45,4 +45,6 @@ logging:
     keepfiles: 7
   level: "{{ debug_level|default('info') }}"
 
+{% if ansible_env.IS_MONITORING|default(False) -%}
 setup.dashboards.enabled: true
+{% endif -%}
