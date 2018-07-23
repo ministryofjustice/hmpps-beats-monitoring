@@ -42,7 +42,7 @@ output:
     ssl.verification_mode: none
 
 #========================== General ==================================
-tags: ["{{ lookup('env', 'HMPPS_ROLE')}}", "{{ lookup('env', 'HMPPS_STACK')}}"]
+tags: ["{{ lookup('env', 'HMPPS_ROLE')}}", "{{ lookup('env', 'HMPPS_STACK')}}", "{{ lookup('env', 'HMPPS_FQDN')}}"]
 
 #================================ Logging ======================================
 logging:

@@ -30,7 +30,7 @@ output:
       path: "/etc/filebeat/filebeat.template.json"
       overwrite: true
 #========================== General ==================================
-tags: ["{{ lookup('env', 'HMPPS_ROLE')}}", "{{ lookup('env', 'HMPPS_STACK')}}"]
+tags: ["{{ lookup('env', 'HMPPS_ROLE')}}", "{{ lookup('env', 'HMPPS_STACK')}}", "{{ lookup('env', 'HMPPS_FQDN')}}"]
 
 
 ############################# Logging #########################################
