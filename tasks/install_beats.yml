@@ -1,29 +1,36 @@
 ---
 
-- name: construct our download url
-  set_fact:
-    download_url: "{{ artifact_base }}/{{ item }}/{{ item }}-{{ es_version }}-x86_64.rpm"
+- name: Check if our package is installed
+  yum:
+    list: "{{ item }}"
+  register: pkg_installed
 
-- name: Get our artifact
-  get_url:
-    url: "{{ download_url }}"
-    dest: "/tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
+- block:
+    - name: construct our download url
+      set_fact:
+        download_url: "{{ artifact_base }}/{{ item }}/{{ item }}-{{ es_version }}-x86_64.rpm"
 
-- name: Install the package
-  command: "rpm -vi /tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
-  become: true
+    - name: Get our artifact
+      get_url:
+        url: "{{ download_url }}"
+        dest: "/tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
 
-- name: Remove the downloaded binary
-  file:
-    path: "/tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
-    state: absent
+    - name: Install the package
+      command: "rpm -vi /tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
+      become: true
 
-- name: Create our config
-  template:
-    src: "templates/{{ item }}.yml"
-    dest: "/etc/{{ item }}/{{ item }}.yml"
+    - name: Remove the downloaded binary
+      file:
+        path: "/tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
+        state: absent
 
-- name: Start the service
-  service:
-    name: "{{ item }}"
-    state: started
+    - name: Create our config
+      template:
+        src: "templates/{{ item }}.yml"
+        dest: "/etc/{{ item }}/{{ item }}.yml"
+
+    - name: Start the service
+      service:
+        name: "{{ item }}"
+        state: started
+  when: pkg_installed.results | selectattr("yumstate", "match", "installed") | list | length == 0
