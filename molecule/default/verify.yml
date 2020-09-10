@@ -1,0 +1,23 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Gather package facts
+      package_facts:
+        manager: auto
+
+    - name: Populate service facts
+      service_facts:
+
+    - name: set services fact
+      set_fact:
+        node_services: "{{ ansible_facts.services }}"
+
+    - name: check beats playbook
+      include: ../tests/test_beats.yml
+      with_items:
+        - filebeat
+        - metricbeat

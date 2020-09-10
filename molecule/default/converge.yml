@@ -1,0 +1,10 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars_files:
+    - ../vars/docker.yml
+  tasks:
+    - name: "Include hmpps-beats-monitoring"
+      include_role:
+        name: "hmpps-beats-monitoring"

@@ -1,5 +1,4 @@
 ---
-
 - name: Check if our package is installed
   yum:
     list: "{{ item }}"
@@ -16,7 +15,9 @@
         dest: "/tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
 
     - name: Install the package
-      command: "rpm -vi /tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
+      yum:
+        name: "tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
+        state: present
       become: true
 
     - name: Remove the downloaded binary

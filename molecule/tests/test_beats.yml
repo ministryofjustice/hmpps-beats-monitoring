@@ -1,0 +1,21 @@
+---
+- name: "confirm {{ item }} is installed"
+  assert:
+    that: "'{{ item }}' in ansible_facts.packages"
+
+- name: "retrieve {{ item }} config file"
+  stat:
+    path: "/etc/{{ item }}/{{ item }}.yml"
+  register: res
+
+- name: "confirm {{ item }} config file exists"
+  assert:
+    that: res.stat.exists
+
+- name: set service name
+  set_fact:
+    service_name: "{{ item }}.service"
+
+- name: "confirm service {{ service_name }} is running"
+  assert:
+    that: "{{ node_services[service_name]['state'] == 'running' }}"
