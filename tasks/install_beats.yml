@@ -16,7 +16,7 @@
 
     - name: Install the package
       yum:
-        name: "tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
+        name: "/tmp/{{ item }}-{{ es_version }}-x86_64.rpm"
         state: present
       become: true
 
